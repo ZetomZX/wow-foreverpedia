@@ -1,0 +1,36 @@
+## Interface: 16001
+## Title: Foreverpedia
+## Notes: Item sources and uses for WoW Forever
+## Notes-ruRU: Источники и способы использования предметов для WoW Forever
+## Author: Foreverpedia contributors
+## Version: 0.9.3
+## IconTexture: Interface\AddOns\Foreverpedia\Media\ForeverpediaIcon.png
+## Dependencies: Foreverpedia_Data
+## OptionalDeps: QuestieDB
+## SavedVariables: ForeverpediaDB
+## X-Category: Inventory
+## X-QuestieDB-Contract: 1
+## X-QuestieDB-Min-Version: 1.0.16
+## X-Foreverpedia-Data-Min-Version: 0.9.1
+## X-Foreverpedia-Data-Schema: 3
+## X-Client-Data-Build: 1.60.1.70959
+## X-License: GPL-3.0-or-later
+
+DataBridge.lua
+Config.lua
+Util.lua
+Localization.lua
+Theme.lua
+Storage.lua
+Settings.lua
+MinimapButton.lua
+Search.lua
+Provider.lua
+ObservationCollector.lua
+CraftTree.lua
+UI.lua
+Gamepad.lua
+GamepadNavigation.lua
+VersionExchange.lua
+Core.lua
+

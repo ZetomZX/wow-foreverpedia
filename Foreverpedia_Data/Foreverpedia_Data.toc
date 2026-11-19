@@ -1,0 +1,17 @@
+## Interface: 16001
+## Title: Foreverpedia: Database
+## Title-ruRU: Foreverpedia: Database
+## Notes: Versioned static database for Foreverpedia
+## Notes-ruRU: Версионируемая статическая база данных для Foreverpedia
+## Author: Foreverpedia contributors
+## Version: 0.9.3
+## X-Category: Inventory
+## X-Foreverpedia-Data-Schema: 3
+## X-Client-Data-Build: 1.60.1.70959
+## X-License: GPL-3.0-or-later
+
+Bootstrap.lua
+Search.lua
+Recipes.lua
+Sources.lua
+QuestieSnapshot.lua

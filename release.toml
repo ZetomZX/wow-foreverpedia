@@ -1,0 +1,9 @@
+[release]
+core_version = "0.9.3"
+data_version = "0.9.3"
+minimum_data_version = "0.9.1"
+interface = 16001
+data_schema = 3
+client_build = "1.60.1.70959"
+questiedb_version = "1.0.16"
+
