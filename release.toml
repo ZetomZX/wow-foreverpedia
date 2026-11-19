@@ -1,4 +1,5 @@
 [release]
+bundle_version = "0.9.3"
 core_version = "0.9.3"
 data_version = "0.9.3"
 minimum_data_version = "0.9.1"

@@ -28,6 +28,7 @@ def load_release_config(path: Path) -> dict:
         raise ValueError("release.toml must contain a [release] table")
 
     required = {
+        "bundle_version": str,
         "core_version": str,
         "data_version": str,
         "minimum_data_version": str,
@@ -46,6 +47,7 @@ def load_release_config(path: Path) -> dict:
 
 
 RELEASE_CONFIG = load_release_config(RELEASE_CONFIG_PATH)
+BUNDLE_VERSION = RELEASE_CONFIG["bundle_version"]
 ADDON_VERSION = RELEASE_CONFIG["core_version"]
 DATA_ADDON_VERSION = RELEASE_CONFIG["data_version"]
 MIN_DATA_ADDON_VERSION = RELEASE_CONFIG["minimum_data_version"]
@@ -284,9 +286,11 @@ def verify_toc(addon_dir: Path, version: str) -> None:
 def verify_data_addon(data_dir: Path, core_toc_path: Path) -> None:
     toc_path = data_dir / "Foreverpedia_Data.toc"
     bootstrap_path = data_dir / "Bootstrap.lua"
+    core_config_path = core_toc_path.parent / "Config.lua"
     toc = toc_path.read_text(encoding="utf-8")
     bootstrap = bootstrap_path.read_text(encoding="utf-8")
     core_toc = core_toc_path.read_text(encoding="utf-8")
+    core_config = core_config_path.read_text(encoding="utf-8")
 
     for expected in (
         f"## Version: {DATA_ADDON_VERSION}",
@@ -328,6 +332,13 @@ def verify_data_addon(data_dir: Path, core_toc_path: Path) -> None:
     ):
         if expected not in core_toc:
             raise ValueError(f"Foreverpedia TOC does not contain {expected!r}")
+
+    for expected in (
+        f"dataSchema = {DATA_SCHEMA}",
+        f'minimumDataVersion = "{MIN_DATA_ADDON_VERSION}"',
+    ):
+        if expected not in core_config:
+            raise ValueError(f"Config.lua does not contain {expected!r}")
 
     old_data_dir = CORE_ADDON_DIR / "Data"
     if old_data_dir.exists():
@@ -398,6 +409,19 @@ def write_addon_archive(output: Path, addon_dirs: tuple[Path, ...]) -> None:
                     target.write(source, source.relative_to(ROOT).as_posix())
 
 
+def release_output_paths(
+    bundle_version: str = BUNDLE_VERSION,
+    core_version: str = ADDON_VERSION,
+    data_version: str = DATA_ADDON_VERSION,
+    dist_dir: Path = DIST_DIR,
+) -> dict[str, Path]:
+    return {
+        "core": dist_dir / f"Foreverpedia-{core_version}-Core.zip",
+        "data": dist_dir / f"Foreverpedia_Data-{data_version}.zip",
+        "bundle": dist_dir / f"Foreverpedia-{bundle_version}-WoW-Forever.zip",
+    }
+
+
 def build_release() -> tuple[Path, Path]:
     questie_archive = VENDOR_DIR / QUESTIEDB_FILENAME
     questie_manifest = VENDOR_DIR / f"QuestieDB-{QUESTIEDB_VERSION}-release.json"
@@ -418,44 +442,24 @@ def build_release() -> tuple[Path, Path]:
     verify_data_addon(DATA_ADDON_DIR, CORE_ADDON_DIR / "Foreverpedia.toc")
 
     DIST_DIR.mkdir(parents=True, exist_ok=True)
-    core_output = DIST_DIR / f"Foreverpedia-{ADDON_VERSION}-Core.zip"
-    data_output = DIST_DIR / f"Foreverpedia_Data-{DATA_ADDON_VERSION}.zip"
-    output = DIST_DIR / f"Foreverpedia-{ADDON_VERSION}-WoW-Forever.zip"
-    questie_output = DIST_DIR / f"Foreverpedia-{ADDON_VERSION}-With-QuestieDB.zip"
+    paths = release_output_paths()
+    core_output = paths["core"]
+    data_output = paths["data"]
+    output = paths["bundle"]
 
     write_addon_archive(core_output, (CORE_ADDON_DIR,))
     write_addon_archive(data_output, (DATA_ADDON_DIR,))
 
     write_addon_archive(output, ADDON_DIRS)
 
-    with zipfile.ZipFile(questie_output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as target:
-        for addon_dir in ADDON_DIRS:
-            for source in sorted(addon_dir.rglob("*")):
-                if source.is_file():
-                    archive_name = source.relative_to(ROOT).as_posix()
-                    target.write(source, archive_name)
-
-        with zipfile.ZipFile(questie_archive, "r") as questie:
-            for info in questie.infolist():
-                normalized = info.filename.replace("\\", "/")
-                if not safe_archive_name(normalized):
-                    raise ValueError(f"unsafe QuestieDB archive path: {info.filename}")
-                if normalized and not normalized.startswith("QuestieDB/"):
-                    raise ValueError(f"unexpected QuestieDB archive path: {info.filename}")
-                if not info.is_dir():
-                    info.filename = normalized
-                    target.writestr(info, questie.read(info))
-
     verify_release_archive(core_output, {"Foreverpedia"})
     verify_release_archive(data_output, {"Foreverpedia_Data"})
     verify_release_archive(output, {"Foreverpedia", "Foreverpedia_Data"})
-    verify_release_archive(
-        questie_output,
-        {"Foreverpedia", "Foreverpedia_Data", "QuestieDB"},
-        {"Foreverpedia", "Foreverpedia_Data"},
-    )
 
     output_manifest = {
+        "release": {
+            "version": BUNDLE_VERSION,
+        },
         "addon": {
             "name": "Foreverpedia",
             "version": ADDON_VERSION,
@@ -522,11 +526,6 @@ def build_release() -> tuple[Path, Path]:
             "sha256": sha256(output),
             "bytes": output.stat().st_size,
         },
-        "optionalQuestieArchive": {
-            "file": questie_output.name,
-            "sha256": sha256(questie_output),
-            "bytes": questie_output.stat().st_size,
-        },
         "componentArchives": {
             "core": {
                 "file": core_output.name,
@@ -554,6 +553,5 @@ if __name__ == "__main__":
     print(DIST_DIR / f"Foreverpedia-{ADDON_VERSION}-Core.zip")
     print(DIST_DIR / f"Foreverpedia_Data-{DATA_ADDON_VERSION}.zip")
     print(archive)
-    print(DIST_DIR / f"Foreverpedia-{ADDON_VERSION}-With-QuestieDB.zip")
     print(manifest)
 

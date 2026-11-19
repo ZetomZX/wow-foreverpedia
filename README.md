@@ -38,7 +38,9 @@ an in-game observation.
 
 ## Install
 
-Extract `dist/Foreverpedia-0.9.3-WoW-Forever.zip` into:
+Download the latest `Foreverpedia-<version>-WoW-Forever.zip` from
+[GitHub Releases](https://github.com/ZetomZX/wow-foreverpedia/releases/latest)
+and extract it into:
 
 ```text
 World of Warcraft\_forever_\Interface\AddOns
@@ -51,15 +53,14 @@ English. A manual language choice in `Options` is saved and takes priority.
 The result must contain `AddOns\Foreverpedia` and
 `AddOns\Foreverpedia_Data`. `Foreverpedia_Data` contains generated, read-only
 indexes and deliberately has no SavedVariables. To enable extended information,
-also install QuestieDB or use
-`dist/Foreverpedia-0.9.3-With-QuestieDB.zip`. Restart the game after installing.
-Lua-only edits can normally be tested with `/reload`.
+install QuestieDB separately. Restart the game after installing. Lua-only edits
+can normally be tested with `/reload`.
 
 For later independent updates, use
-`dist/Foreverpedia-0.9.3-Core.zip` to replace only the interface code or
-`dist/Foreverpedia_Data-0.9.3.zip` to replace only the generated database.
+`Foreverpedia-<core-version>-Core.zip` to replace only the interface code or
+`Foreverpedia_Data-<data-version>.zip` to replace only the generated database.
 The `WoW-Forever` archive is the standalone clean-install package; the
-`With-QuestieDB` archive is the optional expanded bundle.
+QuestieDB addon is never embedded in Foreverpedia release archives.
 
 ## Use
 
@@ -139,3 +140,12 @@ recipe/ingredient reference records, and the versioned boundary between
 
 See [docs/DATA_ARCHITECTURE.md](docs/DATA_ARCHITECTURE.md) for provenance and
 merge rules.
+
+See [docs/RELEASE.md](docs/RELEASE.md) for versioning, changelog, packaging,
+tagging, and GitHub Release instructions.
+
+## License
+
+Foreverpedia is distributed under the
+[GNU General Public License v3.0 or later](LICENSE.md). Third-party data notices
+are included with the Data addon.

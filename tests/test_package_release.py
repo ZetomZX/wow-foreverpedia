@@ -16,6 +16,7 @@ SPEC.loader.exec_module(PACKAGE_RELEASE)
 
 class PackageReleaseTests(unittest.TestCase):
     def test_release_metadata_is_loaded_from_toml(self):
+        self.assertEqual(PACKAGE_RELEASE.BUNDLE_VERSION, "0.9.3")
         self.assertEqual(PACKAGE_RELEASE.ADDON_VERSION, "0.9.3")
         self.assertEqual(PACKAGE_RELEASE.DATA_ADDON_VERSION, "0.9.3")
         self.assertEqual(PACKAGE_RELEASE.MIN_DATA_ADDON_VERSION, "0.9.1")
@@ -23,6 +24,17 @@ class PackageReleaseTests(unittest.TestCase):
         self.assertEqual(PACKAGE_RELEASE.DATA_SCHEMA, 3)
         self.assertEqual(PACKAGE_RELEASE.CLIENT_BUILD, "1.60.1.70959")
         self.assertEqual(PACKAGE_RELEASE.QUESTIEDB_VERSION, "1.0.16")
+
+    def test_release_archive_names_support_independent_component_versions(self):
+        paths = PACKAGE_RELEASE.release_output_paths(
+            bundle_version="1.2.3",
+            core_version="1.2.2",
+            data_version="1.1.9",
+            dist_dir=Path("dist"),
+        )
+        self.assertEqual(paths["bundle"].name, "Foreverpedia-1.2.3-WoW-Forever.zip")
+        self.assertEqual(paths["core"].name, "Foreverpedia-1.2.2-Core.zip")
+        self.assertEqual(paths["data"].name, "Foreverpedia_Data-1.1.9.zip")
 
     def test_archive_names_reject_traversal(self):
         self.assertTrue(PACKAGE_RELEASE.safe_archive_name("QuestieDB/src/api.lua"))

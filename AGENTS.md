@@ -6,6 +6,8 @@
   commands.
 - Read `docs/DATA_ARCHITECTURE.md` before changing generated data, provenance,
   provider boundaries, or source merge behavior.
+- Read `docs/RELEASE.md` before changing versions, preparing release notes,
+  creating tags, building release archives, or publishing a release.
 - Read `release.toml` when changing release, compatibility, schema, or pinned
   client-data versions. It is the source of release metadata used by
   `tools/package_release.py`.
