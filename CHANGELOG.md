@@ -13,3 +13,6 @@ and the project uses semantic version numbers for public releases.
 
 ### Fixed
 
+- Prevented the same lootable object from appearing twice when live QuestieDB
+  and historical CMaNGOS data describe it with different location metadata.
+

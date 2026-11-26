@@ -378,6 +378,12 @@ end
 local function acquisitionSourceKey(relation)
     local hasStableID = relation.npcID or relation.entityID or relation.questID
         or relation.spellID or relation.mailTemplateID
+    local fallbackName, fallbackDetail, fallbackZone
+    if not hasStableID then
+        fallbackName = relation.name
+        fallbackDetail = relation.detail
+        fallbackZone = relation.zone
+    end
     return Util.Key(
         relation.kind,
         relation.npcID,
@@ -385,9 +391,9 @@ local function acquisitionSourceKey(relation)
         relation.questID,
         relation.spellID,
         relation.mailTemplateID,
-        hasStableID and nil or relation.name,
-        hasStableID and nil or relation.detail,
-        hasStableID and nil or relation.zone
+        fallbackName,
+        fallbackDetail,
+        fallbackZone
     )
 end
 
