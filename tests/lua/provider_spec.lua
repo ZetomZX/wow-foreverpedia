@@ -109,7 +109,7 @@ local namespace = {
         fishingPoolNames = { [180656] = "Косяк шалфокуня" },
         gathering = { [103] = { { 186, { 20 } } } },
         objects = {
-            [100] = { { 20, 40, 1, 2 } },
+            [100] = { { 20, 40, 1, 2 }, { 22, 30, 1, 1 } },
             [104] = { { 22, 30, 1, 1 } },
         },
         objectNames = { [22] = "Historical Object 22" },
@@ -144,13 +144,32 @@ assert(ok, message)
 assert(namespace.DataProvider:GetItemID("item:100") == 100)
 
 local result = namespace.DataProvider:Get(100)
-assert(#result.sources == 6, "expected support-table mob plus five acquisition sources")
+assert(#result.sources == 7,
+    "expected support-table mob, five Questie sources, and one unique historical object")
 assert(#result.uses == 5,
     "expected quest, start quest, taught spell, profession, and class ability uses")
 assert(result.sources[1].name == "NPC 12")
 assert(result.sources[1].chance == "25.5%")
 assert(result.sources[2].zone == "Elwynn Forest")
 assert(result.sources[4].kind == "object")
+local object20Count, liveObject, historicalObject = 0
+for _, source in ipairs(result.sources) do
+    if source.kind == "object" and source.entityID == 20 then
+        object20Count = object20Count + 1
+        liveObject = source
+    elseif source.kind == "object" and source.entityID == 22 then
+        historicalObject = source
+    end
+end
+assert(object20Count == 1, "live and historical rows for Object 20 should merge")
+assert(liveObject.provenance == "QuestieDB 1.0.16",
+    "the richer live Questie relation should retain priority")
+assert(liveObject.chance == "40%", "historical chance should enrich the live relation")
+assert(liveObject.zone == "Elwynn Forest",
+    "historical location should enrich a live relation without a direct zone")
+assert(not liveObject.historical, "the merged relation should remain a live Questie source")
+assert(historicalObject and historicalObject.provenance == "CMaNGOS Classic Era",
+    "a genuinely different historical object source should remain visible")
 assert(result.uses[4].kind == "profession")
 assert(result.uses[4].professionName == "Tailoring")
 assert(result.uses[4].professionIcon == 136249)
@@ -170,7 +189,8 @@ for _, source in ipairs(result.sources) do
 end
 assert(questReward and questReward.questLevel == 15)
 assert(questReward.questFaction == "Альянс")
-assert(#questReward.locations == 2)
+assert(#questReward.locations == 3,
+    "quest reward should include one NPC starter and both object spawn locations")
 assert(namespace.DataProvider:HasCraftRelations(100))
 assert(namespace.DataProvider:HasCraftRelations(300))
 assert(not namespace.DataProvider:HasCraftRelations(999))
@@ -269,7 +289,8 @@ assert(mailSource.maxQuantity == 2)
 local status = namespace.DataProvider:GetStatus()
 assert(status.version == "1.0.16")
 assert(status.contractVersion == 4)
-assert(status.cachedItems == 1)
+assert(status.cachedItems == 2,
+    "the main item and gathering fixture should both be cached")
 assert(status.dropTableAvailable)
 
 local fallbackQuestUse = namespace.DataProvider:Get(109)
