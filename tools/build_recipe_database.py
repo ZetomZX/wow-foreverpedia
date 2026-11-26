@@ -12,7 +12,7 @@ import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CLIENT_BUILD = "1.60.1.70959"
+CLIENT_BUILD = "1.60.1.71139"
 LOCALE = "ruRU"
 SOURCE_DIR = ROOT / "vendor" / "wago" / CLIENT_BUILD
 TABLES = (

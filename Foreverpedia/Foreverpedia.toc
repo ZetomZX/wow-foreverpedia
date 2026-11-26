@@ -3,7 +3,7 @@
 ## Notes: Item sources and uses for WoW Forever
 ## Notes-ruRU: Источники и способы использования предметов для WoW Forever
 ## Author: Foreverpedia contributors
-## Version: 0.9.3
+## Version: 0.9.6
 ## IconTexture: Interface\AddOns\Foreverpedia\Media\ForeverpediaIcon.png
 ## Dependencies: Foreverpedia_Data
 ## OptionalDeps: QuestieDB
@@ -13,7 +13,7 @@
 ## X-QuestieDB-Min-Version: 1.0.16
 ## X-Foreverpedia-Data-Min-Version: 0.9.1
 ## X-Foreverpedia-Data-Schema: 3
-## X-Client-Data-Build: 1.60.1.70959
+## X-Client-Data-Build: 1.60.1.71139
 ## X-License: GPL-3.0-or-later
 
 DataBridge.lua

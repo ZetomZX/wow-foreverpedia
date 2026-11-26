@@ -2,13 +2,13 @@
 
 ## Shipped data
 
-Release `0.9.3` uses five complementary layers:
+Foreverpedia uses five complementary layers:
 
-1. a compact built-in snapshot of QuestieDB Forever `1.0.16` for basic item,
+1. a compact built-in snapshot of QuestieDB Forever `1.1.6` for basic item,
    quest, NPC, object, vendor and container relations;
-2. optional QuestieDB Forever `1.0.16` for full coordinates, quest metadata,
+2. optional compatible QuestieDB Forever for full coordinates, quest metadata,
    localized entity data and tooltips;
-3. client DB2 tables from WoW Forever build `1.60.1.70959` for every recipe;
+3. client DB2 tables from WoW Forever build `1.60.1.71139` for every recipe;
 4. local observations stored in `ForeverpediaDB` for loot, merchants,
    quest objectives/rewards, and recipes exposed by profession windows;
 5. historical CMaNGOS Classic DB acquisition indexes, clearly marked as
@@ -30,14 +30,18 @@ dependency; its bootstrap exposes a versioned schema that the core validates
 before reading the indexes. This lets either addon be updated independently
 without deleting observations collected by players.
 
-Packaging produces separate core and data archives for incremental updates, a
-standalone archive containing both required addons, and an optional expanded
-archive that also contains QuestieDB. Player observations are stored by WoW outside the addon folders and
-are therefore unaffected by replacing either component.
+Packaging produces separate core and data archives for incremental updates and
+a standalone archive containing both required addons. QuestieDB is installed
+separately. WoW stores player observations outside the addon folders, so they
+survive component updates.
 
 QuestieDB is pinned to producer commit
-`a444a6418113ae0fce5d30c897674132e756ba1d`, contract `4`, SHA-256
-`d073a954c3c7f3f374eb82b0501630998b3f8b7971baad247c8fb360ba538679`.
+`4377c981ac368d1593ec92788218e0a689a6a02b`, contract `4`, SHA-256
+`4d3e043e3c8d28014ec6f5d4d894d476769e1be99d060a174e14ca46038ebe50`.
+To rebuild the indexes, download `QuestieDB-1.1.6-Forever.zip` and
+`release.json` from the [upstream release](https://github.com/Questie/QuestieDB/releases/tag/v1.1.6).
+Place them in `vendor/`, naming the manifest `QuestieDB-1.1.6-release.json`.
+
 The client inputs are the `ruRU` exports of `SpellReagents`, `SpellEffect`,
 `SkillLineAbility`, `SkillLine`, `ItemEffect`, `ItemXItemEffect`, and
 `ItemSparse` from
@@ -53,17 +57,18 @@ profession window and every recipe can list its ingredients.
 The same generator joins `SpellReagents` to category-7 `SkillLineAbility`
 records with a non-zero class mask. It emits a separate item-first class
 ability index containing spell ID, class mask, skill line and reagent count.
-This contains 23 items and 76 relations in client build `1.60.1.70959`.
+This contains 23 items and 76 relations in client build `1.60.1.71139`.
 Spells without a verifiable class skill-line relation are omitted rather than
 assigned through hand-authored exceptions.
 
 `tools/build_search_database.py` converts the pinned client `ItemSparse`
 exports into Russian and English name indexes. Autocomplete therefore covers
-all 19,326 named items per locale in build `1.60.1.70959`, not only items
+all 19,403 named items per locale in build `1.60.1.71139`, not only items
 cached by the current character.
 
 `tools/build_source_database.py` transforms QuestieDB's creature drop table
-into a complete item-first index with no per-item cap. In addition,
+into an item-first index with no per-item cap. The index uses the base support
+table. Questie's separate drop-correction module is outside the import. In addition,
 `tools/build_questie_snapshot.py` extracts compact item relations and the
 Russian/English names plus levels/zones of referenced entities. This is the
 standalone runtime fallback. Optional QuestieDB enriches those relations with

@@ -4,10 +4,10 @@
 ## Notes: Versioned static database for Foreverpedia
 ## Notes-ruRU: Версионируемая статическая база данных для Foreverpedia
 ## Author: Foreverpedia contributors
-## Version: 0.9.3
+## Version: 0.9.5
 ## X-Category: Inventory
 ## X-Foreverpedia-Data-Schema: 3
-## X-Client-Data-Build: 1.60.1.70959
+## X-Client-Data-Build: 1.60.1.71139
 ## X-License: GPL-3.0-or-later
 
 Bootstrap.lua

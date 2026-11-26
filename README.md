@@ -20,7 +20,7 @@ the snapshot's quests, objects, vendors, containers, and creature sources.
 Updating either Foreverpedia addon does not touch observations in
 `ForeverpediaDB`.
 The complete reagent index is generated directly from the WoW Forever client
-DB2 tables for build `1.60.1.70959`, so recipes do not depend on the
+DB2 tables for build `1.60.1.71139`, so recipes do not depend on the
 character's learned professions. AtlasLoot is not used.
 
 The same pinned client tables identify items consumed by class abilities.
@@ -104,7 +104,7 @@ QuestieDB addon is never embedded in Foreverpedia release archives.
 
 ## Development
 
-The CSV files under `vendor/wago/1.60.1.70959` are pinned exports from
+The CSV files under `vendor/wago/1.60.1.71139` are pinned exports from
 `wago.tools/db2`: `SpellReagents`, `SpellEffect`, `SkillLineAbility`, and
 `SkillLine`, plus `ItemEffect`, `ItemXItemEffect`, and `ItemSparse` for recipe
 items and prices (`ruRU`). The autocomplete/name index is generated from both
@@ -132,7 +132,7 @@ Runtime Lua specs are also executed automatically when a `lua` interpreter is
 available on `PATH`; the Python suite still validates module load order on
 machines without one.
 
-The package step verifies QuestieDB `1.0.16`, its compact fallback snapshot,
+The package step verifies QuestieDB `1.1.6`, its compact fallback snapshot,
 producer commit and SHA-256,
 the DB2 inputs, the generated client-name search index, the Linen Cloth
 recipe/ingredient reference records, and the versioned boundary between

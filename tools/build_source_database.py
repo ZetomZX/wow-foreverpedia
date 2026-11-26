@@ -11,7 +11,7 @@ import zipfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-QUESTIEDB_VERSION = "1.0.16"
+QUESTIEDB_VERSION = "1.1.6"
 QUESTIEDB_FILENAME = f"QuestieDB-{QUESTIEDB_VERSION}-Forever.zip"
 DROP_ENTRY = "QuestieDB/support/Forever/DropTables/classicItemDrops.lua"
 CMANGOS_PATH = ROOT / "vendor" / "cmangos" / "ClassicDB_1_12_1_z2815.sql.gz"

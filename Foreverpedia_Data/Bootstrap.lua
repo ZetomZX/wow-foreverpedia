@@ -2,8 +2,8 @@ local addonName, Data = ...
 
 Data.manifest = {
     schema = 3,
-    version = "0.9.3",
-    clientBuild = "1.60.1.70959",
+    version = "0.9.5",
+    clientBuild = "1.60.1.71139",
 }
 
 -- The game creates a separate namespace table for every addon. Expose this

@@ -1,9 +1,9 @@
 # Third-party data notice
 
 `Sources.lua` and `QuestieSnapshot.lua` are compact transforms of QuestieDB
-Forever `1.0.16` data, plus the CMaNGOS Classic open-water and
+Forever `1.1.6` data, plus the CMaNGOS Classic open-water and
 fishing-hole loot tables. Both sources are distributed under GPL-3.0;
-QuestieDB is optional and the expanded bundle includes its license files. The
+QuestieDB is an optional standalone addon. The
 CMaNGOS copyright notice is included in `ThirdParty`.
 
 Source: <https://github.com/Questie/QuestieDB>
@@ -11,8 +11,9 @@ Source: <https://github.com/Questie/QuestieDB>
 `Recipes.lua`, including its recipe and class-ability reagent indexes, is
 generated from the WoW Forever client DB2 tables
 `SpellReagents`, `SpellEffect`, `SkillLineAbility`, `SkillLine`, `ItemEffect`,
-`ItemXItemEffect`, and `ItemSparse`, build `1.60.1.70959`, locale `ruRU`, exported through
-wago.tools.
+`ItemXItemEffect`, and `ItemSparse`, build `1.60.1.71139`, locale `ruRU`, exported
+through wago.tools. `Search.lua` uses the `ruRU` and `enUS` exports of
+`ItemSparse` for the same build.
 
 Source: <https://wago.tools/db2/>
 

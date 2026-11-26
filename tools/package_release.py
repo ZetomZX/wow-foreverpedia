@@ -55,9 +55,9 @@ INTERFACE_VERSION = RELEASE_CONFIG["interface"]
 DATA_SCHEMA = RELEASE_CONFIG["data_schema"]
 CLIENT_BUILD = RELEASE_CONFIG["client_build"]
 QUESTIEDB_VERSION = RELEASE_CONFIG["questiedb_version"]
-QUESTIEDB_COMMIT = "a444a6418113ae0fce5d30c897674132e756ba1d"
+QUESTIEDB_COMMIT = "4377c981ac368d1593ec92788218e0a689a6a02b"
 QUESTIEDB_FILENAME = f"QuestieDB-{QUESTIEDB_VERSION}-Forever.zip"
-QUESTIEDB_SHA256 = "d073a954c3c7f3f374eb82b0501630998b3f8b7971baad247c8fb360ba538679"
+QUESTIEDB_SHA256 = "4d3e043e3c8d28014ec6f5d4d894d476769e1be99d060a174e14ca46038ebe50"
 CLIENT_TABLES = (
     "SpellReagents", "SpellEffect", "SkillLineAbility", "SkillLine",
     "ItemEffect", "ItemXItemEffect", "ItemSparse",
@@ -148,7 +148,6 @@ def verify_questiedb(archive_path: Path, manifest_path: Path) -> dict:
     with zipfile.ZipFile(archive_path, "r") as archive:
         required = {
             "QuestieDB/QuestieDB_Forever.toc",
-            "QuestieDB/QuestieDB_Camelot.toc",
             "QuestieDB/src/api.lua",
             "QuestieDB/src/support/data.lua",
             "QuestieDB/support/Forever/DropTables/classicItemDrops.lua",
@@ -160,9 +159,6 @@ def verify_questiedb(archive_path: Path, manifest_path: Path) -> dict:
             raise ValueError(f"QuestieDB archive is missing: {', '.join(sorted(missing))}")
 
         forever_toc = archive.read("QuestieDB/QuestieDB_Forever.toc")
-        camelot_toc = archive.read("QuestieDB/QuestieDB_Camelot.toc")
-        if forever_toc != camelot_toc:
-            raise ValueError("QuestieDB Forever and Camelot TOCs are not identical")
         toc_text = forever_toc.decode("utf-8")
         for expected in (
             f"## Interface: {INTERFACE_VERSION}",
@@ -199,7 +195,7 @@ def verify_client_recipes(source_dir: Path, generated_path: Path) -> dict[str, s
         "[3276] = {trainers={{2326,100},{2327,100}",
         "[8339] = {trainers={},items={{6716,800,1}}}",
         "[3276] = {{2589,2}}",
-        "requirementCount = 2519",
+        "requirementCount = 2520",
         "[27832] = {164,300,1}",
         "Data.ClassAbilityData = {",
         "itemCount = 23",
@@ -219,8 +215,8 @@ def verify_search_index(generated_path: Path) -> None:
         'source = "WoW client ItemSparse"',
         f'version = "{CLIENT_BUILD}"',
         "locales = {",
-        'ruRU = {sha256="00c371a9456519fa401d15fb07f8d7875096cfd1fdb14584c5d1894819e8332d",itemCount=19326}',
-        'enUS = {sha256="0e194578bca2289558a133fe6d4184b1baba848327c0fa0442ba2846b9b39a55",itemCount=19326}',
+        'ruRU = {sha256="06b802dba4eafd8229077558e837c098d2a5971154a44dfe574b28ea0e61cca7",itemCount=19403}',
+        'enUS = {sha256="04ef3ef49aed8f98b0ffe357f980b08afd6e32b62ef592afe03e620ab95e6648",itemCount=19403}',
         '[2589] = {"Льняной материал","льняной материал"}',
         '[21071] = {"Сырой шалфокунь","сырой шалфокунь"}',
         '[2589] = {"Linen Cloth","linen cloth"}',
@@ -388,13 +384,13 @@ def verify_questie_snapshot(generated_path: Path) -> None:
     for expected in (
         "Data.QuestieSnapshot = {",
         f'version = "{QUESTIEDB_VERSION}"',
-        "itemCount = 15601",
-        "npcCount = 6538",
-        "questCount = 3688",
-        "objectCount = 940",
+        "itemCount = 15900",
+        "npcCount = 6476",
+        "questCount = 3829",
+        "objectCount = 1089",
         "[2589]=",
         "[3693]={[1]={2344,2345,2346,14275},[7]={547}",
-        "[5085]={[1]={3258,3260,3261,3263,3259,3262,268624},[7]={899}",
+        "[5085]={[1]={3258,3260,3261,3263,3259,3262},[7]={899}",
         "Слуга Азоры",
     ):
         if expected not in generated:
@@ -491,8 +487,8 @@ def build_release() -> tuple[Path, Path]:
             "name": "WoW client ItemSparse",
             "build": CLIENT_BUILD,
             "locales": {
-                "ruRU": {"itemCount": 19326},
-                "enUS": {"itemCount": 19326},
+                "ruRU": {"itemCount": 19403},
+                "enUS": {"itemCount": 19403},
             },
         },
         "dropIndex": {

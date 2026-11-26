@@ -37,7 +37,7 @@ class BuildRecipeDatabaseTests(unittest.TestCase):
         lua = BUILD_RECIPES.build_lua(
             {2589: self.index[2589]}, self.professions, BUILD_RECIPES.client_manifest()
         )
-        self.assertIn('version = "1.60.1.70959"', lua)
+        self.assertIn('version = "1.60.1.71139"', lua)
         self.assertIn('[197] = "Портняжное дело"', lua)
         self.assertIn('[197] = 136249', lua)
         self.assertIn('[3276] = {{2589,2}}', lua)

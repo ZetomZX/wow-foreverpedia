@@ -10,7 +10,7 @@ import unicodedata
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CLIENT_BUILD = "1.60.1.70959"
+CLIENT_BUILD = "1.60.1.71139"
 LOCALES = ("ruRU", "enUS")
 SOURCE_PATHS = {
     "ruRU": ROOT / "vendor" / "wago" / CLIENT_BUILD / "ItemSparse.csv",

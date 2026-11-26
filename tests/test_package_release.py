@@ -16,14 +16,14 @@ SPEC.loader.exec_module(PACKAGE_RELEASE)
 
 class PackageReleaseTests(unittest.TestCase):
     def test_release_metadata_is_loaded_from_toml(self):
-        self.assertEqual(PACKAGE_RELEASE.BUNDLE_VERSION, "0.9.3")
-        self.assertEqual(PACKAGE_RELEASE.ADDON_VERSION, "0.9.3")
-        self.assertEqual(PACKAGE_RELEASE.DATA_ADDON_VERSION, "0.9.3")
+        self.assertEqual(PACKAGE_RELEASE.BUNDLE_VERSION, "0.9.6")
+        self.assertEqual(PACKAGE_RELEASE.ADDON_VERSION, "0.9.6")
+        self.assertEqual(PACKAGE_RELEASE.DATA_ADDON_VERSION, "0.9.5")
         self.assertEqual(PACKAGE_RELEASE.MIN_DATA_ADDON_VERSION, "0.9.1")
         self.assertEqual(PACKAGE_RELEASE.INTERFACE_VERSION, 16001)
         self.assertEqual(PACKAGE_RELEASE.DATA_SCHEMA, 3)
-        self.assertEqual(PACKAGE_RELEASE.CLIENT_BUILD, "1.60.1.70959")
-        self.assertEqual(PACKAGE_RELEASE.QUESTIEDB_VERSION, "1.0.16")
+        self.assertEqual(PACKAGE_RELEASE.CLIENT_BUILD, "1.60.1.71139")
+        self.assertEqual(PACKAGE_RELEASE.QUESTIEDB_VERSION, "1.1.6")
 
     def test_release_archive_names_support_independent_component_versions(self):
         paths = PACKAGE_RELEASE.release_output_paths(
@@ -63,7 +63,7 @@ class PackageReleaseTests(unittest.TestCase):
             ROOT / "vendor" / PACKAGE_RELEASE.QUESTIEDB_FILENAME,
             ROOT / "vendor" / f"QuestieDB-{PACKAGE_RELEASE.QUESTIEDB_VERSION}-release.json",
         )
-        self.assertEqual(metadata["version"], "1.0.16")
+        self.assertEqual(metadata["version"], "1.1.6")
         self.assertEqual(metadata["contractVersion"], 4)
 
     def test_pinned_client_recipe_source_is_verified(self):

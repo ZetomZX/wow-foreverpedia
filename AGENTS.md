@@ -11,7 +11,8 @@
 - Read `release.toml` when changing release, compatibility, schema, or pinned
   client-data versions. It is the source of release metadata used by
   `tools/package_release.py`.
-- Update `CHANGELOG.md` for user-visible changes and release preparation.
+- Keep the full version history in `CHANGELOG.md`. Use only changes since the
+  immediately preceding distributed bundle in platform release notes.
 - Keep detailed workflows and architecture in focused files under `docs/` and
   link them from this section instead of expanding `AGENTS.md` with long-form
   documentation.

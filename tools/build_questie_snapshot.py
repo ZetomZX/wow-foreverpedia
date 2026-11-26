@@ -13,7 +13,7 @@ import zlib
 
 
 ROOT = Path(__file__).resolve().parents[1]
-QUESTIEDB_VERSION = "1.0.16"
+QUESTIEDB_VERSION = "1.1.6"
 QUESTIEDB_FILENAME = f"QuestieDB-{QUESTIEDB_VERSION}-Forever.zip"
 TOC_ENTRY = "QuestieDB/QuestieDB_Forever.toc"
 DROP_ENTRY = "QuestieDB/support/Forever/DropTables/classicItemDrops.lua"

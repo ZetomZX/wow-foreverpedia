@@ -41,11 +41,19 @@ The package validation must fail if these values disagree.
 
 ## Prepare the changelog
 
+Keep the full project history in the standalone `CHANGELOG.md`. Use
+`[Unreleased]` for pending player-visible changes and keep older entries in
+reverse version order. GitHub and CurseForge notes cover only the changes
+since the immediately preceding distributed bundle. If that bundle has no
+Git tag, compare its archived contents and manifest to the new bundle.
+An older public tag alone is not a reliable baseline when a newer bundle
+was distributed separately.
+
 Keep commits small and descriptive. Prefer subjects beginning with `feat:`,
 `fix:`, `data:`, `docs:`, `test:`, or `chore:` so the release range is easy to
 classify.
 
-Find the previous release tag and generate a technical draft:
+When the preceding bundle has a tag, use it to generate a technical draft:
 
 ```powershell
 git tag --sort=-version:refname

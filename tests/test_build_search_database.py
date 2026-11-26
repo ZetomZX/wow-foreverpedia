@@ -44,7 +44,7 @@ class BuildSearchDatabaseTests(unittest.TestCase):
             },
         )
         self.assertIn('source = "WoW client ItemSparse"', lua)
-        self.assertIn('version = "1.60.1.70959"', lua)
+        self.assertIn('version = "1.60.1.71139"', lua)
         self.assertIn('ruRU = {', lua)
         self.assertIn('enUS = {', lua)
         self.assertIn('[2589] = {"Льняной материал","льняной материал"}', lua)
