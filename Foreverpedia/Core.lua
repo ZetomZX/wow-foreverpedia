@@ -58,6 +58,17 @@ local function installModifiedClickHook()
             deferItemOpen(link, true)
         end
     end)
+
+    -- Chat hyperlinks can bypass HandleModifiedItemClick when Alt has no native action.
+    if type(SetItemRef) == "function" then
+        hooksecurefunc("SetItemRef", function(link, text, button)
+            if button == "LeftButton" and IsAltKeyDown and IsAltKeyDown()
+                    and type(link) == "string" and link:match("^item:%d+") then
+                local fullLink = type(text) == "string" and text:find("|H" .. link .. "|h", 1, true)
+                deferItemOpen(fullLink and text or link, true)
+            end
+        end)
+    end
     ns.modifiedClickHookInstalled = true
 end
 
