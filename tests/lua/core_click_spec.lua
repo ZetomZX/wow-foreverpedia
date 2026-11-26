@@ -14,12 +14,13 @@ CreateFrame = function()
     return frame
 end
 
-local modifiedHook
+local secureHooks = {}
 hooksecurefunc = function(name, callback)
-    assert(name == "HandleModifiedItemClick")
-    modifiedHook = callback
+    assert(name == "HandleModifiedItemClick" or name == "SetItemRef")
+    secureHooks[name] = callback
 end
 HandleModifiedItemClick = function() end
+SetItemRef = function() end
 
 local altDown = true
 IsAltKeyDown = function() return altDown end
@@ -111,6 +112,8 @@ frames[1].scripts.OnEvent(frames[1], "ADDON_LOADED", "Foreverpedia")
 assert(ForeverpediaDB.craftTreeEnabled == nil)
 assert(type(tooltipPostCall) == "function")
 assert(type(SlashCmdList.FOREVERPEDIA) == "function")
+assert(type(secureHooks.HandleModifiedItemClick) == "function")
+assert(type(secureHooks.SetItemRef) == "function")
 SlashCmdList.FOREVERPEDIA("")
 assert(searchOpenCount == 1, "/fp without arguments must open manual search")
 
@@ -131,7 +134,7 @@ assert(opened[1].itemID == 2589)
 frames[2].scripts.OnEvent(frames[2], "GLOBAL_MOUSE_DOWN", "RightButton")
 assert(#opened == 1)
 
-modifiedHook("|Hitem:2589|h[Льняной материал]|h")
+secureHooks.HandleModifiedItemClick("|Hitem:2589|h[Льняной материал]|h")
 runDeferred()
 assert(#opened == 1, "the mouse and modified-click paths must be debounced")
 
@@ -157,4 +160,37 @@ frames[2].scripts.OnEvent(frames[2], "GLOBAL_MOUSE_DOWN", "LeftButton")
 runDeferred()
 assert(#opened == 2)
 
-print("Core profession reagent click spec: OK")
+local itemPayload = "item:2589::::::::"
+local itemText = "|cff9d9d9d|H" .. itemPayload .. "|h[Linen Cloth]|h|r"
+local itemRefHook = secureHooks.SetItemRef
+itemRefHook(itemPayload, itemText, "LeftButton")
+assert(#deferred == 0, "ordinary chat item clicks must be ignored")
+
+altDown = true
+itemRefHook(itemPayload, itemText, "RightButton")
+itemRefHook("player:Example", "|Hplayer:Example|h[Example]|h", "LeftButton")
+assert(#deferred == 0, "right clicks and non-item chat links must be ignored")
+
+itemRefHook(itemPayload, itemText, "LeftButton")
+assert(#opened == 2, "opening must be deferred outside Blizzard's click path")
+runDeferred()
+assert(#opened == 3, "Alt-left chat clicks must open even without HandleModifiedItemClick")
+assert(opened[3].itemID == 2589 and opened[3].link == itemText)
+
+now = 11.2
+itemRefHook("item:2592::::::::", "[Wool Cloth]", "LeftButton")
+runDeferred()
+assert(#opened == 4 and opened[4].itemID == 2592, "the raw payload must work without full link text")
+
+now = 11.5
+secureHooks.HandleModifiedItemClick(itemText)
+itemRefHook(itemPayload, itemText, "LeftButton")
+runDeferred()
+assert(#opened == 5, "a click dispatched through both hooks must open exactly once")
+
+now = 11.8
+secureHooks.HandleModifiedItemClick(itemText)
+runDeferred()
+assert(#opened == 6, "the standalone modified item click path must still open")
+
+print("Core chat and profession click spec: OK")

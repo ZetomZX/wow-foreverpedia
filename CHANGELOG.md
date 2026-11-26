@@ -13,6 +13,8 @@ and the project uses semantic version numbers for public releases.
 
 ### Fixed
 
+- Alt-left-clicking an item hyperlink in chat now opens that same item in
+  Foreverpedia without changing ordinary or non-item hyperlink behavior.
 - Prevented the same lootable object from appearing twice when live QuestieDB
   and historical CMaNGOS data describe it with different location metadata.
 
